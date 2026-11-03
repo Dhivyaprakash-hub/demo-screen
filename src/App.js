@@ -7,7 +7,7 @@ function App() {
       id: 1,
       name: "Blood Pressure Monitor",
       price: 1999,
-      description: "Clinically validated",
+      description: "Sample listing for interface demonstration",
     },
     {
       id: 2,
@@ -31,9 +31,9 @@ function App() {
         margin: "auto",
       }}
     >
-      <h1 style={{ fontSize: 22 }}>Clinical Product Demo</h1>
+      <h1 style={{ fontSize: 22 }}>Sample Product Catalog</h1>
       <p style={{ color: "#444" }}>
-        Open this URL on your phone to view the UI.
+        Interface demo only. Listings are examples, not medical recommendations.
       </p>
       <div style={{ marginTop: 12 }}>
         {products.map((p) => (

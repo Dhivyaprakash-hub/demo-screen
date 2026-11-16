@@ -37,3 +37,7 @@ The app is a static client-side build and can be hosted on Vercel, Cloudflare Pa
 - React 19
 - Vite 8
 - CSS with responsive layout, keyboard focus states, and reduced-motion support
+
+## License
+
+The original Wellnest application code and documentation are available under the [MIT License](LICENSE). Externally hosted photos and fonts remain subject to their own terms.

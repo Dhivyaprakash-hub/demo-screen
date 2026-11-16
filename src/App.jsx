@@ -94,6 +94,32 @@ function readSaved() {
   }
 }
 
+function Modal({ label, onDismiss, children }) {
+  const ref = useRef(null);
+
+  useEffect(() => {
+    ref.current.showModal();
+  }, []);
+
+  return (
+    <dialog
+      ref={ref}
+      className="modal-backdrop"
+      aria-labelledby={label}
+      onClose={onDismiss}
+      onMouseDown={(event) => {
+        if (event.target === event.currentTarget) event.currentTarget.close();
+      }}
+    >
+      {children}
+    </dialog>
+  );
+}
+
+function closeModal(event) {
+  event.currentTarget.closest("dialog").close();
+}
+
 function App() {
   const [query, setQuery] = useState("");
   const [category, setCategory] = useState("All items");
@@ -120,10 +146,6 @@ function App() {
         event.preventDefault();
         searchRef.current?.focus();
         return;
-      }
-      if (event.key === "Escape") {
-        setSelected(null);
-        setCompareOpen(false);
       }
     };
     window.addEventListener("keydown", onKeyDown);
@@ -243,9 +265,9 @@ function App() {
 
       <footer className="footer"><a className="wordmark" href="#home"><span className="mark">w.</span><span>wellnest</span></a><p>A thoughtful little catalog concept.<br /><span>Made with care, for everyday.</span></p><div className="footer-links"><a href="#catalog">Explore</a><a href="#about">Our approach</a><a href="#home">Back to top ↑</a></div><div className="footer-bottom"><span>© 2025 WELLNEST STUDIO</span><span>INTERFACE SHOWCASE · SAMPLE CATALOG</span><span>MADE FOR THE EVERYDAY ✳</span></div></footer>
 
-      {selected && <div className="modal-backdrop" role="presentation" onMouseDown={(event) => { if (event.target === event.currentTarget) setSelected(null); }}><section className="product-modal" role="dialog" aria-modal="true" aria-labelledby="modal-title"><button className="modal-close" onClick={() => setSelected(null)} aria-label="Close details">×</button><div className={`modal-image ${selected.tone}`}><img src={selected.image} alt="" /></div><div className="modal-copy"><div className="eyebrow"><span className="eyebrow-line" /> {selected.category.toUpperCase()}</div><h2 id="modal-title">{selected.name}</h2><div className="modal-rating">★ {selected.rating} <span>({selected.reviews} notes)</span><b>{formatPrice(selected.price)}</b></div><p>{selected.description}</p><div className="modal-detail-heading">A few thoughtful details</div><ul>{selected.details.map((detail) => <li key={detail}><span>✳</span>{detail}</li>)}</ul><p className="modal-disclaimer">Illustrative sample listing. Product details and availability are examples for this interface showcase.</p><button className={`primary-button modal-save ${saved.includes(selected.id) ? "saved" : ""}`} onClick={() => toggleSaved(selected.id)}>{saved.includes(selected.id) ? "Saved to your list" : "Save for later"}<span>{saved.includes(selected.id) ? "♥" : "♡"}</span></button></div></section></div>}
+      {selected && <Modal label="modal-title" onDismiss={() => setSelected(null)}><section className="product-modal"><button className="modal-close" onClick={closeModal} aria-label="Close details">×</button><div className={`modal-image ${selected.tone}`}><img src={selected.image} alt="" /></div><div className="modal-copy"><div className="eyebrow"><span className="eyebrow-line" /> {selected.category.toUpperCase()}</div><h2 id="modal-title">{selected.name}</h2><div className="modal-rating">★ {selected.rating} <span>({selected.reviews} notes)</span><b>{formatPrice(selected.price)}</b></div><p>{selected.description}</p><div className="modal-detail-heading">A few thoughtful details</div><ul>{selected.details.map((detail) => <li key={detail}><span>✳</span>{detail}</li>)}</ul><p className="modal-disclaimer">Illustrative sample listing. Product details and availability are examples for this interface showcase.</p><button className={`primary-button modal-save ${saved.includes(selected.id) ? "saved" : ""}`} onClick={() => toggleSaved(selected.id)}>{saved.includes(selected.id) ? "Saved to your list" : "Save for later"}<span>{saved.includes(selected.id) ? "♥" : "♡"}</span></button></div></section></Modal>}
 
-      {compareOpen && <div className="modal-backdrop" role="presentation" onMouseDown={(event) => { if (event.target === event.currentTarget) setCompareOpen(false); }}><section className="compare-modal" role="dialog" aria-modal="true" aria-labelledby="compare-title"><div className="compare-header"><div><div className="eyebrow"><span className="eyebrow-line" /> SIDE BY SIDE</div><h2 id="compare-title">A closer <em>look.</em></h2></div><button className="modal-close" onClick={() => setCompareOpen(false)} aria-label="Close comparison">×</button></div>{comparedProducts.length ? <div className="compare-table"><div className="compare-row compare-head"><span>DETAIL</span>{comparedProducts.map((product) => <strong key={product.id}>{product.name}</strong>)}</div><div className="compare-row"><span>Category</span>{comparedProducts.map((product) => <span key={product.id}>{product.category}</span>)}</div><div className="compare-row"><span>Price</span>{comparedProducts.map((product) => <strong key={product.id}>{formatPrice(product.price)}</strong>)}</div><div className="compare-row"><span>Rating</span>{comparedProducts.map((product) => <span key={product.id}>★ {product.rating} <small>({product.reviews})</small></span>)}</div><div className="compare-row"><span>Details</span>{comparedProducts.map((product) => <span key={product.id}>{product.details[0]}</span>)}</div></div> : <div className="compare-empty"><span>▤</span><p>Choose up to three pieces and compare them side by side.</p><button className="text-button" onClick={() => setCompareOpen(false)}>Browse the collection ↗</button></div>}<div className="compare-footer"><span>{compare.length}/3 pieces selected</span>{comparedProducts.map((product) => <button key={product.id} onClick={() => toggleCompare(product.id)}>{product.name} ×</button>)}</div></section></div>}
+      {compareOpen && <Modal label="compare-title" onDismiss={() => setCompareOpen(false)}><section className="compare-modal"><div className="compare-header"><div><div className="eyebrow"><span className="eyebrow-line" /> SIDE BY SIDE</div><h2 id="compare-title">A closer <em>look.</em></h2></div><button className="modal-close" onClick={closeModal} aria-label="Close comparison">×</button></div>{comparedProducts.length ? <div className="compare-table"><div className="compare-row compare-head"><span>DETAIL</span>{comparedProducts.map((product) => <strong key={product.id}>{product.name}</strong>)}</div><div className="compare-row"><span>Category</span>{comparedProducts.map((product) => <span key={product.id}>{product.category}</span>)}</div><div className="compare-row"><span>Price</span>{comparedProducts.map((product) => <strong key={product.id}>{formatPrice(product.price)}</strong>)}</div><div className="compare-row"><span>Rating</span>{comparedProducts.map((product) => <span key={product.id}>★ {product.rating} <small>({product.reviews})</small></span>)}</div><div className="compare-row"><span>Details</span>{comparedProducts.map((product) => <span key={product.id}>{product.details[0]}</span>)}</div></div> : <div className="compare-empty"><span>▤</span><p>Choose up to three pieces and compare them side by side.</p><button className="text-button" onClick={closeModal}>Browse the collection ↗</button></div>}<div className="compare-footer"><span>{compare.length}/3 pieces selected</span>{comparedProducts.map((product) => <button key={product.id} onClick={() => toggleCompare(product.id)}>{product.name} ×</button>)}</div></section></Modal>}
     </div>
   );
 }

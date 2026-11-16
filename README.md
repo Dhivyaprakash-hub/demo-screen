@@ -2,7 +2,9 @@
 
 A responsive, accessible product discovery experience built with React 19 and Vite. The catalog uses fictional sample listings to demonstrate practical storefront interactions without claiming to sell medical products or provide health advice.
 
-**[Open the live demo](https://demo-screen-ivory.vercel.app)**
+**[Open the live demo](https://dhivyaprakash-hub.github.io/demo-screen/)**
+
+![Wellnest’s live comparison panel showing two fictional products side by side](docs/images/comparison.jpg)
 
 ## What you can do
 
@@ -28,7 +30,7 @@ Create a production build with `npm run build`; preview it locally with `npm run
 
 ## Hosting
 
-The app is a static client-side build and can be hosted on Vercel, Cloudflare Pages, or another static CDN. No paid service or secret environment variable is required. The current Vercel deployment is configured to rebuild from the repository's default branch.
+The app is a static client-side build and can be hosted on Vercel, Cloudflare Pages, or another static CDN. No paid service or secret environment variable is required. GitHub Actions builds and publishes the current catalog to GitHub Pages from the default branch.
 
 ## Stack
 
